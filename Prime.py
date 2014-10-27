@@ -149,6 +149,30 @@ def Divisors(num):
   return divisors
 
 #__________________________________________________________________________________________________
+def ProperDivisors(num):
+  propdiv = []
+  p = ListOfPrimesBelow(int(math.sqrt(num)))
+  for i in p:
+    f = 0
+    while (num % i == 0):
+      num = num/i
+      f += 1
+    if f > 0:
+      propdiv.append([i,f])
+  if num > 0:
+    propdiv.append([num,1])
+  return propdiv
+
+#__________________________________________________________________________________________________
+def SumDivisors(num):
+  d = ProperDivisors(num)
+  s = 1
+  for i in d:
+    if i[0] > 1:
+      s *= ( pow(i[0],(i[1]+1))-1)/(i[0]-1)
+  return (s - num)
+
+#__________________________________________________________________________________________________
 def TriangleNumber(rank):
   if rank == 0:
     return 0
@@ -458,6 +482,17 @@ def Problem0020():
   outp += "\nAnswer: " + str(sumi) + '\n'
   print (outp,"\n========================================================")
 
+#__________________________________________________________________________________________________
+def Problem0021():
+  outp = """Evaluate the sum of all the amicable numbers under 10000. """
+  s = 0
+  for i in range(2, 10001):
+    j = SumDivisors(i)
+    if i == SumDivisors(j):
+      if i != j:
+        s += i
+  outp += "\nAnswer: " + str(s) + '\n'
+  print (outp,"\n========================================================") 
 
 #__________________________________________________________________________________________________
 def Problem0022(filen):
@@ -813,13 +848,13 @@ def main(options, args, parser):
   #Problem0020()
   #PowerDigitSum("input/Problem0013.Input.txt")
   #Problem0018()
+  #Problem0021()
   #Problem0022("input/Problem0022.Input.txt")
   #Problem0039()
   #Problem0042("input/Problem0042.Input.txt")
   #Problem0044()
   #Problem0045()
-  Problem0049()
-
+  #Problem0049()
 
   #outf = open("prob27.out.txt", 'w')
   #lmax = -3000
