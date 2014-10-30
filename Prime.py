@@ -155,7 +155,7 @@ def ProperDivisors(num):
   for i in p:
     f = 0
     while (num % i == 0):
-      num = num/i
+      num = int(num/i)
       f += 1
     if f > 0:
       propdiv.append([i,f])
@@ -534,6 +534,69 @@ def Problem0030():
   print (outp,"\n========================================================")
 
 #__________________________________________________________________________________________________
+def Problem0032():
+  outp = """Find the sum of all products whose multiplicand/multiplier/product identity can be written as a 1 through 9 pandigital."""
+  d = DigitsNum(123456789)
+  perm = []
+  w = [ str(i) for i in d ]
+  sprod = []
+  ## get all numbers of form (abcd) : there are 9P4 = 3042 permutations
+  for i in w:
+    for j in w:
+      for k in w:
+        for l in w:
+          if (i==j) or (i == k) or (i == l):
+            continue
+          if (j==k) or (j==l):
+            continue
+          if (k==l):
+            continue
+          ## find the remaining numbers in the set
+          comp1 = list(set(w) - set([i,j,k,l])) ## 5 remain
+
+          ## get all the (abcd x e = fghi)
+          for p in comp1:
+            d2 = int(i+j+k+l)
+            d1 = int(p)
+            if d2 % d1 == 0:
+              comp2 = list(set(comp1) - set([p])) ## 4 remain
+              for s in comp2:
+                for t in comp2:
+                  for u in comp2:
+                    for v in comp2:
+                      if(s==t) or (s==u) or (s==v):
+                        continue
+                      if(t==u) or (t==v) or (u==v):
+                        continue
+                      d3 = int(s+t+u+v)
+                      if int(d2/d1) == d3:
+                        if d2 not in sprod:
+                          sprod.append(d2)
+                        perm.append([d2, d1, d3])
+          ## get all the (abc x de = fghi)
+          for p in comp1:
+            for q in comp1:
+              if (p == q):
+                continue
+              d1 = int(p+q)
+              d2 = int(i+j+k+l)
+              if (d2 % d1) == 0:
+                comp2 = list(set(comp1) - set([p,q])) ## 3 remain
+                for s in comp2:
+                  for t in comp2:
+                    for u in comp2:
+                      if (s==t) or (s==u) or (t==u):
+                        continue
+                      d3 = int(s+t+u)
+                      if int(d2/d1) == d3:
+                        if d2 not in sprod:
+                          sprod.append(d2)
+                        perm.append([d2, d1, d3])
+  #print (perm, sprod, sum(sprod))
+  outp += "\nAnswer: " + str(sum(sprod)) + '\n'
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
 def Problem0035():
   outp = """36) How many circular primes are there below one million?"""
   cnt = 1 ## 2 is a prime
@@ -850,6 +913,7 @@ def main(options, args, parser):
   #Problem0018()
   #Problem0021()
   #Problem0022("input/Problem0022.Input.txt")
+  Problem0032()
   #Problem0039()
   #Problem0042("input/Problem0042.Input.txt")
   #Problem0044()
