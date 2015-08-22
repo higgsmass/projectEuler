@@ -869,6 +869,60 @@ def Problem0050():
 
 
 #__________________________________________________________________________________________________
+def Problem0063():
+  outp = """63) How many n-digit positive integers exist which are also an nth power?"""
+  nitems = 0
+  for i in range(1,500):
+    for j in range(1,500):
+      a = i**j
+      if len(str(a)) == j:
+        nitems += 1
+  outp += "\nAnswer: " + str(nitems) + '\n'
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
+def Problem0065():
+  t = [2, 3]
+  xf = [2, 1, 1]
+  outp = """65) Find the sum of digits in the numerator of the 100th convergent of the continued fraction for e?"""
+  for i in range(0,3*33,3):
+    for j in range(0,3):
+      k = 1
+      if j == 0:
+        k = int(i/3) + 1
+      t.append ( t[i+1+j] * k * xf[j] + t[i+j] )
+    if len(t) > 100:
+      break
+  n = t[100-1]
+  s = 0
+  for c in str(n):
+    s += int(c)
+  outp += "\nAnswer: " + str(s) + '\n'
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
+def Problem0092():
+  t = []
+  outp = """92) How many starting numbers below ten million will arrive at 89?"""
+  for i in range(1,10000000):
+    v = [i]
+    cnt = 0
+    while True:
+      s = 0;
+      for c in str(i):
+        s = s + int(c)**2
+      if (s == 89 or s == 1) and cnt > 0:
+        if s == 89:
+          v.append(cnt)
+          t.append(v)
+        break
+      else:
+        i = s
+        cnt = cnt + 1
+  outp += "\nAnswer: " + str(len(t)) + '\n'
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
 def PowerDigitSum(filen):
   lines = [line.strip() for line in open(filen)]
   suml = 0
@@ -908,41 +962,7 @@ def probunknown():
 
 #__________________________________________________________________________________________________
 def main(options, args, parser):
-  #Problem0020()
-  #PowerDigitSum("input/Problem0013.Input.txt")
-  #Problem0018()
-  #Problem0021()
-  #Problem0022("input/Problem0022.Input.txt")
-  Problem0032()
-  #Problem0039()
-  #Problem0042("input/Problem0042.Input.txt")
-  #Problem0044()
-  #Problem0045()
-  #Problem0049()
-
-  #outf = open("prob27.out.txt", 'w')
-  #lmax = -3000
-  #amax = -3000
-  #bmax = -3000
-  #for a in range(-1000,1000,1):
-  #  for b in range(-1000,1000,1):
-  #    n = 0
-  #    plist = []
-  #    while True:
-  #      num = n*n + a + b
-  #      if isPrime(num):
-  #        plist.append([n,a,b])
-  #        n = n+1
-  #      else:
-  #        if len(plist) > lmax:
-  #          lmax = len(plist)
-  #          amax = a
-  #          bmax = b
-  #        print ("%6d  %6d   %6d" %(a,b, len(plist)), end="\n", file=outf)
-  #        break
-  
-  #print ("%6d  %6d   %6d" %(amax,bmax, lmax), end="\n", file=outf)
-  #outf.close()  
+  Problem0092()
             
 
 #__________________________________________________________________________________________________
