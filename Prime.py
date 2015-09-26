@@ -1,5 +1,6 @@
 import sys, os
-import math,functools
+#import math,functools
+import collections, math
 
 ## command line options parser
 #__________________________________________________________________________________________________
@@ -922,6 +923,139 @@ def Problem0092():
   outp += "\nAnswer: " + str(len(t)) + '\n'
   print (outp,"\n========================================================")
 
+
+
+## read word list
+##------------------------------------------------------------------
+def p098_readlist(wlf):
+  with open('input/Problem0098.Input.txt','r') as f:
+    for l in f.readlines():
+      wl = l.split(',')
+      for w in wl:
+        wlf.append(w.strip('\"'))
+    f.close()
+
+## read word list
+def p098_readsq(sq):
+  with open('input/mysquares.txt','r') as f:
+    for l in f.readlines():
+      sq.append(l.strip())
+    f.close()
+
+## count letter frequencies for each word
+##------------------------------------------------------------------
+def p098_wc(wlf):
+  col = []
+  for i in range(len(wlf)):
+    col.append([wlf[i], collections.Counter(wlf[i])])
+  return col
+
+def p098_compare(x, y):
+  if x[0] == y[0]:
+    return False
+  if len(x[1]) != len(y[1]):
+    return False
+  ## letters in both words must be same
+  l = [a for a in sorted(x[1])]
+  m = [b for b in sorted(y[1])]
+  if l == m:
+    ## frequency of letters in both words must be same
+    p = [ x[1][k] for k in sorted(x[1])]
+    q = [ y[1][k] for k in sorted(y[1])]
+    if p == q:
+      return True
+  return False
+
+## find pairs of words that match in letters and frequencies
+##------------------------------------------------------------------
+def p098_wordpairs(pairs, col):
+  words = [];
+  for i in range(len(col)):
+    for j in range(len(col)):
+      if i == j:
+        continue
+      if len(col[i][0]) != len(col[j][0]):
+        continue
+      if p098_compare(col[i], col[j]):
+        w1 = col[i][0]
+        w2 = col[j][0]
+        appme = 0
+        if w1 not in words:
+          words.append(w1)
+          appme += 1
+        if w2 not in words:
+          words.append(w2)
+          appme += 1
+        if appme == 2:
+          pairs.append([col[i], col[j]])
+
+
+## count all pairs of perfect square anagrams
+##------------------------------------------------------------------
+def p098_findWordSquares(wordsq, squares, pairs):
+  large = -1
+  for p in  pairs:
+    l = len(p[1][0])
+    big = ''; sml = ''
+    for i in range(l-1):
+      sml += '9'
+    big = int(sml+'9')
+    sml = int(sml)
+    sq = []; uniq = ''
+    cc = [ i for i in range(0,10) ]
+    for i in squares:
+      j = int(i)
+      if j >= big:
+        break
+      if j <= sml:
+        continue
+      sq.append(i)
+      if l < 3:
+        uniq += str(i)
+    if l < 3:
+      cc = collections.Counter(uniq)
+      cc = sorted([ c for c in cc ])
+
+    a = [ k for k in str(p[0][0]) ]
+    b = [ k for k in str(p[1][0]) ]
+    #print cc, p[0][0], p[1][0], l, a, b, sq[:1], sq[-1:]
+    nchars = len(a); sq1 = []
+    for k in sq:
+      if nchars == len(collections.Counter(k)):
+        sq1.append(k)
+    for j in range(len(sq1)):
+      dd = dict(); ee = ''; ff = ''; gg = ''; hh = ''
+      for m in range(len(a)):
+        dd[a[m]] = str(sq1[j])[m]
+      for k in range(nchars):
+        ee += dd[a[k]]
+        ff += dd[b[k]]
+        gg += a[k]
+        hh += b[k]
+      if hh == str(p[1][0]) and (gg == str(p[0][0])):
+        if (ff in sq1 and ee in sq1):
+          wordsq.append([ee, ff, gg, hh])
+          for num in [ee, ff]:
+            if int(num) > large:
+              large = int(num)
+  return large
+
+def Problem0098():
+  outp = """98) What is the largest square number formed by any member of such a pair?"""
+  wlf = []; col = []; pairs = []; squares = []; wordsq = []
+  ## populate list of words
+  p098_readlist(wlf)
+  p098_readsq(squares)
+  ## split words into letters and their frequencies
+  col = p098_wc(wlf)
+  ## find pairs of words that match in letters and frequencies
+  p098_wordpairs(pairs, col)
+
+  ## count all pairs of perfect square anagrams
+  sqr = p098_findWordSquares(wordsq, squares, pairs)
+  outp += "\nAnswer: " + str(sqr) + '\n'
+  print (outp,"\n========================================================")
+
 #__________________________________________________________________________________________________
 def PowerDigitSum(filen):
   lines = [line.strip() for line in open(filen)]
@@ -962,7 +1096,7 @@ def probunknown():
 
 #__________________________________________________________________________________________________
 def main(options, args, parser):
-  Problem0092()
+  Problem0098()
             
 
 #__________________________________________________________________________________________________
