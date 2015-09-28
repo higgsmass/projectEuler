@@ -1057,6 +1057,38 @@ def Problem0098():
   print (outp,"\n========================================================")
 
 #__________________________________________________________________________________________________
+def p102_area(d):
+  #d 0  1   2  3   4   5
+  #  xa ya  xb yb  xc  yc
+  
+  d = [ int(i) for i in d ]
+  ## area of AOB + BOC + AOC (where O is the origin)
+  a = 0.5*(math.fabs( d[2]*d[5] - d[4]*d[3]))
+  a += 0.5*(math.fabs( d[4]*d[1] - d[0]*d[5]))
+  a += 0.5*(math.fabs( d[0]*d[3] - d[2]*d[1]))
+
+  ## area of ABC
+  b = 0.5*( math.fabs( d[0]*d[3] - d[0]*d[5] + d[2]*d[5] - d[2]*d[1] + d[4]*d[1] - d[4]*d[3] ))
+
+  ## if triangle contains origin, ABC = AOB + BOC + AOC
+  if math.fabs(a-b) < 1.e-5:
+    return True
+  else:
+    return False
+
+#__________________________________________________________________________________________________
+def Problem0102():
+  outp = """102) find the number of triangles for which the interior contains the origin"""
+  with open('input/Problem0102.Input.txt','r') as f:
+    c = 0
+    for l in f:
+      d = l.strip().split(',')
+      if p102_area(d):
+        c += 1
+  outp += "\nAnswer: " + str(c) + '\n'
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
 def Problem0119():
   j = 0
   outp = """119) Find a_{30} """
@@ -1099,7 +1131,7 @@ def probunknown():
 
 #__________________________________________________________________________________________________
 def main(options, args, parser):
-  Problem0119()
+  Problem0102()
             
 
 #__________________________________________________________________________________________________
