@@ -897,6 +897,30 @@ def Problem0050():
 
 
 #__________________________________________________________________________________________________
+def Problem0058():
+  outp = """58) length of the square spiral for which the ratio of primes along both diagonals first falls below 10%?"""
+
+  p = 0
+  diag = 1 ## "1" in the middle of spiral/diagonal
+  k = 1
+  while True:
+    n = [k*k,k+1]
+    delta = n[1]
+    i = n[0]
+    for j in range(0,4):
+      l = i+delta
+      diag += 1
+      if isPrime(l):
+        p += 1
+      i += delta
+    ratio = (p*100.0)/diag
+    if ratio < 10.0:
+      outp += "\nAnswer: " + str(int(math.sqrt(l))) + '\n'
+      break
+    k += 2
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
 def Problem0063():
   outp = """63) How many n-digit positive integers exist which are also an nth power?"""
   nitems = 0
@@ -1158,7 +1182,7 @@ def probunknown():
 
 #__________________________________________________________________________________________________
 def main(options, args, parser):
-  Problem0037()
+  Problem0058()
             
 
 #__________________________________________________________________________________________________
