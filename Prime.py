@@ -667,6 +667,33 @@ def Problem0036():
 
 
 #__________________________________________________________________________________________________
+def Problem0037():
+  outp = """Find the sum of the only eleven primes that are both truncatable from left to right and right to left. """
+  with open('input/myprimes.1000000.txt', 'r') as f:
+    total = 0
+    tcnt = 0
+    for l in f:
+      if int(l) < 10:
+        continue
+      s = str(l).strip()
+      cnt = 1
+      for i in range(0,len(s)):
+        if not isPrime( int(s[i:]) ):
+          break
+        cnt += 1
+      for i in range(1,len(s)):
+        if not isPrime( int(s[:i]) ):
+          break
+        cnt += 1
+      if (len(s)*2 == cnt):
+        total += int(s)
+        tcnt += 1
+        if tcnt == 11:
+          break
+  outp += "\nAnswer: " + str(total) + '\n'
+  print (outp,"\n========================================================")
+
+#__________________________________________________________________________________________________
 def Problem0039():
   outp = """If p is the perimeter of a right angle triangle with integral length sides, {a,b,c}, for which value of p <= 1000, is the number of solutions maximised?"""
   nsol_p = {}
@@ -1131,7 +1158,7 @@ def probunknown():
 
 #__________________________________________________________________________________________________
 def main(options, args, parser):
-  Problem0102()
+  Problem0037()
             
 
 #__________________________________________________________________________________________________
